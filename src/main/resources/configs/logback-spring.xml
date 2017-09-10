@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+    <property name="LOG_HOME" value="/data/demo-wholesalers/logs" />
+
+    <!-- all.log -->
+    <appender name="FILE_CUSTOMISE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/all.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_HOME}/all.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- or whenever the file size reaches 50MB -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 1 year worth of history -->
+            <maxHistory>365</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- sqls.log -->
+    <appender name="SQLS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/sqls.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_HOME}/sqls.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- or whenever the file size reaches 50MB -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 6 month's worth of history -->
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+
+
+    <root level="INFO">
+        <appender-ref ref="FILE_CUSTOMISE" />
+    </root>
+
+    <logger name="sqls.mybatis" level="DEBUG" additivity="false">
+        <appender-ref ref="SQLS" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+        <appender-ref ref="SQLS" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <springProfile name="dev,test">
+        <logger name="com.visma" level="DEBUG" additivity="false">
+            <appender-ref ref="FILE_CUSTOMISE" />
+            <appender-ref ref="CONSOLE" />
+        </logger>
+        <logger name="org.hibernate" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE" />
+        </logger>
+    </springProfile>
+
+    <springProfile name="PRODUCTION">
+        <logger name="com.visma" level="INFO" additivity="false">
+            <appender-ref ref="FILE_CUSTOMISE" />
+            <appender-ref ref="CONSOLE" />
+        </logger>
+    </springProfile>
+
+</configuration>

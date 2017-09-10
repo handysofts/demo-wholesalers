@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title></title>
+</head>
+<body th:fragment="content" th:remove="tag">
+
+<h3>Demo - Please select customer, product and enter quantity to get discount and price</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <form th:action="@{/api/v1/product/price/calculation/customer/customerId/product/productId/quantity/quantityVal}"
+              id="calculatePriceForm" onkeypress="return event.keyCode != 13;">
+            <div class="alert alert-danger" id="alertBox" style="display: none;">
+                <div id="messageBox"></div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-10 col-xs-12">
+                    <select class="form-control" id="customer" name="customer">
+                        <option value="0">Select customer</option>
+                        <option th:each="customer : ${attribute_customer_list}" th:value="${customer.id}"
+                                th:text="${customer.name}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-10 col-xs-12">
+                    <select class="form-control" id="product" name="product">
+                        <option value="0">Select product</option>
+                        <option th:each="product : ${attribute_product_list}" th:value="${product.id}"
+                                th:text="${product.name} +' ('+ ${product.price} + '$)'"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-4 col-xs-6">
+                    <input class="form-control" type="number" placeholder="Enter quantity" name="quantity"
+                           id="quantity"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-4 col-xs-6 col-md-offset-6 col-xs-offset-6">
+                    <button type="button" class="btn btn-primary" id="calculatePriceButton" style="width: 100%">
+                        Calculate
+                        Price
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body" id="resultPanel">
+                <p>Demo app for Visma.</p>
+                <p>Used technologies are below</p>
+                <ul>
+                    <li>Maven</li>
+                    <li>Java 8</li>
+                    <li>Spring boot</li>
+                    <li>Spring data</li>
+                    <li>H2 in-memory Database</li>
+                    <li>Flyway</li>
+                    <li>Lombok</li>
+                    <li>Logback</li>
+                    <li>Thymeleaf</li>
+                    <li>Jquery</li>
+                    <li>Bootstrap</li>
+                    <li>JS</li>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                </ul>
+
+                <p><strong>NOTE:</strong> If lombok plugin not installed to your IDE please install before import project source</p>
+                <p>H2 db used for simplicity, you can use any db configuring datasource from <code>application.properties</code></p>
+                <p>Flyway used for auto migration/creation of DB. So you can simply create and use your own DB to start the project.</p>
+
+                <p>&nbsp;</p>
+                <p>If you want to define new kind of rebate agreement, do it as below in 3 steps:</p>
+                <ol>
+                    <li>Insert new agreement and details (values as percentage and etc. which used during discount calculation) to DB using insert sql files under <code>resources/db/migration</code></li>
+                    <li>Create new Component (<code>@Component</code>) which implements <code>RebateAgreementComponent</code> interface and has name/id as defined on rebate_agreements table's name_ column (like as <code>rebate-agreement-fixed-percentage</code>)</li>
+                    <li>
+                        That is all <span class="glyphicon glyphicon-sunglasses"></span><br />
+                        Now you are free to assign this agreement to any customer. It should work like a charm.
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

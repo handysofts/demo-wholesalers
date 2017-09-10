@@ -1,0 +1,38 @@
+/*@media (min-width: 1200px) {*/
+    /*.container {*/
+        /*width: 770px;*/
+    /*}*/
+/*}*/
+
+/* Space out content a bit */
+body {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+/* Everything but the content gets side spacing for mobile first views */
+.header,
+.footer {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+
+/* Custom page header */
+.header {
+    padding-bottom: 1rem;
+    border-bottom: .05rem solid #e5e5e5;
+}
+
+/* Custom page footer */
+.footer {
+    padding-top: 1.5rem;
+    color: #777;
+    border-top: .05rem solid #e5e5e5;
+}
+
+
+/* body - content part */
+.content {
+    padding: 3rem;
+}
